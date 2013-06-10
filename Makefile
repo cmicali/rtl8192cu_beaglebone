@@ -36,7 +36,8 @@ CONFIG_BT_COEXISTENCE				= n
 CONFIG_RTL8192CU_REDEFINE_1X1 =n
 CONFIG_WAKE_ON_WLAN				=	n
 
-CONFIG_PLATFORM_I386_PC = y
+CONFIG_PLATFORM_I386_PC = n
+CONFIG_PLATFORM_BEAGLEBONE = y
 CONFIG_PLATFORM_TI_AM3517 = n
 CONFIG_PLATFORM_ANDROID_X86 = n
 CONFIG_PLATFORM_ARM_S3C2K4 = n
@@ -254,6 +255,16 @@ ARCH ?= $(SUBARCH)
 CROSS_COMPILE ?=
 KVER  := $(shell uname -r)
 KSRC := /lib/modules/$(KVER)/build
+MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
+INSTALL_PREFIX :=
+endif
+
+ifeq ($(CONFIG_PLATFORM_BEAGLEBONE), y)
+EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
+ARCH=arm
+CROSS_COMPILE := arm-linux-gnueabi-
+KVER  := $(shell uname -r)
+KSRC ?= /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
 endif
